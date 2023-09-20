@@ -8,17 +8,17 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-        version: 19.03.13
+          version: 19.03.13
       - run: 
-        name: Install dependencies
-        command: |
-          pip install -r requirements.txt
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
       - run: 
-        name: Run Tests
-        command: |
-          pytest tests/test_app.py
+          name: Run Tests
+          command: |
+            pytest tests/test_app.py
       - run:
-          name; build Docker Image
+          name: build Docker Image
           command: |
             docker build -t mlops_demo .
       - run: 
@@ -26,12 +26,12 @@ jobs:
           Command: |
             docker tag mlops_demo: latest 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo: latest
       - run: 
-        name: Deploy to Staging
-        command: |
-          sudo pip install awscli
-          eval $(aws ecr get-login --no-include-email --region us-east-1)
-          aws ecr get-login --no-include-email --region us-east-1
-          docker push 948624447504dkr.ecr.us-east-1.amazonaws.com/mlops_demo: latest
+          name: Deploy to Staging
+          command: |
+            sudo pip install awscli
+            eval $(aws ecr get-login --no-include-email --region us-east-1)
+            aws ecr get-login --no-include-email --region us-east-1
+            docker push 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo: latest
 
 workflows:
   version: 2
