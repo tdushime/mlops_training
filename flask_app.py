@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from pickle import dump, load
 from logzero import logger, logfile
 from datetime import datetime
-logfile("app.log", maxBytes=1e6, backupCount=3)
+#logfile("app.log", maxBytes=1e6, backupCount=3)
 
 # load the model
 model = load(open('model.pkl', 'rb'))
