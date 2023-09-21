@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker tag mlops_demo:latest 948624447504.dkr.ecr.us-east-2.amazonaws.com/mlops_demo:latest            
+            docker tag mlops_demo:latest 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo:latest            
       - run:
           name: Deploy to Staging
           command: |
