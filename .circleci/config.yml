@@ -1,47 +1,74 @@
-<<<<<<< HEAD
-=======
 version: 2.1
 jobs:
   staging_deployment:
     docker:
-      - image: circleci/python:3.8
+      - image: circleci/python:3.8 
     working_directory: ~/app
-    #working_directory
+    # working_directory: 
     steps:
-      - checkout
+      - checkout 
       - setup_remote_docker:
           version: 19.03.13
-      - run: 
-          name: Install dependencies
+      - run:
+          name: Install Dependencies
           command: |
             pip install -r requirements.txt
-      - run: 
+      - run:
           name: Run Tests
           command: |
             pytest tests/test_app.py
       - run:
-          name: build Docker Image
+          name: Build Docker Image
           command: |
             docker build -t mlops_demo .
-      - run: 
+      - run:
           name: Build Docker Image
-          Command: |
-            docker tag mlops_demo: latest 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo: latest
-      - run: 
-        name: Deploy to Staging
-        command: |
-          sudo pip install awscli
-          eval $(aws ecr get-login --no-include-email --region us-east-1)
-          aws ecr get-login --no-include-email --region us-east-1
-          docker push 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo: latest
+          command: |
+            docker tag mlops_demo:latest 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo:latest            
+      - run:
+          name: Deploy to Staging
+          command: |
+            sudo pip install awscli
+            eval $(aws ecr get-login --no-include-email --region us-east-1)
+            aws ecr get-login --no-include-email --region us-east-1
+            docker push 948624447504.dkr.ecr.us-east-1.amazonaws.com/mlops_demo:latest
+            # aws ecs update-service --cluster ml-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
+            # Examples: push to Docker registry, deploy to a server, etc.
+
+  # production_deployment:
+  #   docker:
+  #     - image: circleci/python:3.8 
+  #   working_directory: ~/app
+  #   # working_directory: 
+  #   steps:
+  #     - checkout 
+  #     - setup_remote_docker:
+  #         version: 19.03.13        
+  #     - run:
+  #         name: Deploy to Staging
+  #         command: |
+  #           sudo pip install awscli
+  #           eval $(aws ecr get-login --no-include-email --region us-east-1)
+  #           aws ecr get-login --no-include-email --region us-east-1
+  #           aws ecs update-service --cluster mlops-api-cluster --service custom-service --task-definition  first-run-task-definition --force-new-deployment
+
+# tags_only: &tags_only
+#   filters:
+#     branches:
+#       ignore: /.*/
+#     tags:
+#       only: /^.*/
 
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - staging_deployment:
-        filters:
-          brances:
-            only:
-              - main
->>>>>>> 58cf6a7 (config3)
+          filters:
+            branches:
+              only: 
+                - main  # Trigger only for tags in the format 'v1.2.3'
+      # - production_deployment:
+      #     requires:
+      #       - staging_deployment:
+      #       <<: *tags_only
