@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import sys
 sys.path.append([str(Path(os.getcwd()).parent), str(Path(os.getcwd()))])
-from flask_app import app
+from app.flask_app import app
 import json
 
 @pytest.fixture
