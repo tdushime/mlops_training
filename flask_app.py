@@ -5,6 +5,25 @@ from logzero import logger, logfile
 from datetime import datetime
 #logfile("app.log", maxBytes=1e6, backupCount=3)
 
+#
+#!/usr/bin/env python
+import snowflake.connector
+
+# Gets the version
+ctx = snowflake.connector.connect(
+    user='tdushime',
+    password='MiP@ssword4',
+    account='WBGUOBS-JGB36255'
+    )
+cs = ctx.cursor()
+try:
+    cs.execute("SELECT current_version()")
+    one_row = cs.fetchone()
+    print(one_row[0])
+finally:
+    cs.close()
+ctx.close()
+
 # load the model
 model = load(open('model.pkl', 'rb'))
 
